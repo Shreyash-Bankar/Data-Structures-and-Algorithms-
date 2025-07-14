@@ -4,8 +4,10 @@ public class sizeOfLargestBst{
         int data;
         Node left;
         Node right;
+        
         Node(int data){
             this.data = data;
+            
         }
     }
     public static Node insert(Node root, Node newNode){
@@ -45,43 +47,39 @@ public class sizeOfLargestBst{
         newNode.right = inorderBuild(arr);
         return newNode;
     }
-    public static boolean isValide(Node root,int min,int max){
-        if(root == null){
-            return true;
+    
+    public static class info{
+        boolean isBST;
+        int size;
+        int max;
+        int min;
+        info(boolean isBST, int size, int max, int min){
+            this.isBST = isBST;
+            this.max = max;
+            this.min = min;
+            this.size = size;
         }
-        if(!(min < root.data) || !(root.data < max)){
-            return false;
-        }
-        boolean left = isValide(root.left,min,root.data);
-        boolean right = isValide(root.right,root.data,max);
-        return left && right;
     }
-    public static int number(Node root){
+    public static int s = 0;
+    public static info optimalFunction(Node root){
         if(root == null){
-            return 0;
+            return new info(true,0,Integer.MIN_VALUE,Integer.MAX_VALUE);
         }
-        int left = number(root.left);
-        int right = number(root.right);
-        return left + right + 1;
+        info left = optimalFunction(root.left);
+        info right = optimalFunction(root.right);
+        info node = new info(left.max < root.data && right.min > root.data ,left.size + right.size + 1, Math.max(root.data,Math.max(left.max,right.max)), Math.min(root.data,Math.min(left.min,right.min)));
+        if(node.isBST == true){
+            s = Math.max(s,node.size);
+        }
+        return node;
     }
-    public static int max = 0;
-    public static int size(Node root){
-        if(root == null){
-            return max;
-        }
-        if(isValide(root,Integer.MIN_VALUE,Integer.MAX_VALUE)){
-            max = Math.max(number(root),max);
-        }
-        size(root.left);
-        size(root.right);
-        return max;
-
-    }
+    
     public static void main(String args[]){
         int arr[] = {50,30,5,-1,-1,20,-1,-1,60,45,-1,-1,70,65,-1,-1,80,-1,-1};
         Node root = inorderBuild(arr);
         inorder(root);
         System.out.println();
-        System.out.print(size(root));
+        optimalFunction(root);
+        System.out.println(s);
     }
 }
