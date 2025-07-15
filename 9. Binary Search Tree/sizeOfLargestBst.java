@@ -37,14 +37,14 @@ public class sizeOfLargestBst{
         inorder(root.right);
     }
     public static int i = -1;
-    public static Node inorderBuild(int arr[]){
+    public static Node preorderBuild(int arr[]){
         i++;
         if(arr[i] == -1){
             return null;
         }
         Node newNode = new Node(arr[i]);
-        newNode.left = inorderBuild(arr);
-        newNode.right = inorderBuild(arr);
+        newNode.left = preorderBuild(arr);
+        newNode.right = preorderBuild(arr);
         return newNode;
     }
     
@@ -67,7 +67,7 @@ public class sizeOfLargestBst{
         }
         info left = optimalFunction(root.left);
         info right = optimalFunction(root.right);
-        info node = new info(left.max < root.data && right.min > root.data ,left.size + right.size + 1, Math.max(root.data,Math.max(left.max,right.max)), Math.min(root.data,Math.min(left.min,right.min)));
+        info node = new info(left.isBST && right.isBST && left.max < root.data && right.min > root.data ,left.size + right.size + 1, Math.max(root.data,Math.max(left.max,right.max)), Math.min(root.data,Math.min(left.min,right.min)));
         if(node.isBST == true){
             s = Math.max(s,node.size);
         }
@@ -76,7 +76,7 @@ public class sizeOfLargestBst{
     
     public static void main(String args[]){
         int arr[] = {50,30,5,-1,-1,20,-1,-1,60,45,-1,-1,70,65,-1,-1,80,-1,-1};
-        Node root = inorderBuild(arr);
+        Node root = preorderBuild(arr);
         inorder(root);
         System.out.println();
         optimalFunction(root);
