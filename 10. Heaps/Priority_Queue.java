@@ -1,6 +1,17 @@
 import java.util.PriorityQueue;
 import java.util.Comparator;
 public class Priority_Queue{
+    static class Student implements Comparable<Student>{
+        String name;
+        int rank;
+        Student(String name, int rank){
+            this.name = name;
+            this.rank = rank;
+        }
+        public int compareTo(Student s2){
+            return this.rank - s2.rank;
+        }
+    }
     public static void main(String args[]){
         PriorityQueue <Integer> pq = new PriorityQueue<>();
         pq.add(6);       
@@ -22,5 +33,17 @@ public class Priority_Queue{
             pq2.remove();
         }
         System.out.println();
+        PriorityQueue <Student> pq3 = new PriorityQueue<>();
+        pq3.add(new Student("A",1));
+        pq3.add(new Student("B",3));
+        pq3.add(new Student("C",2));
+        pq3.add(new Student("D",4));
+            
+        while(!pq3.isEmpty()){
+            System.out.print((pq3.peek()).name+" ");
+            pq3.remove();
+        }
+        System.out.println();
+
     }
 }
