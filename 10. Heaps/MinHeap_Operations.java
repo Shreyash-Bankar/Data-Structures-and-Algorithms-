@@ -6,7 +6,7 @@ public class MinHeap_Operations{
             arr.add(data);
             int child = arr.size() - 1;
             int par = (child - 1) / 2;
-            while(arr.get(child) < arr.get(par) ) {
+            while(arr.get(child) < arr.get(par) ) { // arr.get(child) > arr.get(par) for maxHeap
                 int temp = arr.get(par);
                 arr.set(par,arr.get(child));
                 arr.set(child,temp);
@@ -21,10 +21,10 @@ public class MinHeap_Operations{
             int left = 2 * i + 1;
             int right = 2 * i + 2;
             int minIdx = i;
-            if(left < arr.size() && (arr.get(left) < arr.get(minIdx))){
+            if(left < arr.size() && (arr.get(left) < arr.get(minIdx))){ // (arr.get(left) > arr.get(minIdx)) for maxHeap
                 minIdx = left;
             }
-            if(right < arr.size() && (arr.get(right) < arr.get(minIdx))){
+            if(right < arr.size() && (arr.get(right) < arr.get(minIdx))){ // (arr.get(right) > arr.get(minIdx)) for maxHeap
                 minIdx = right;
             }
             if(minIdx != i){
@@ -34,13 +34,14 @@ public class MinHeap_Operations{
                 heapify(minIdx);
             }
         }
-        public  void delete(){
+        public int delete(){
             int temp = arr.get(0);
             arr.set(0 , arr.get(arr.size()-1));
             arr.set(arr.size()-1, temp);
 
             arr.remove(arr.size()-1);
             heapify(0);
+            return temp;
         }
         public boolean isEmpty(){
             return arr.size() == 0;
@@ -48,19 +49,17 @@ public class MinHeap_Operations{
     }
     public static void main(String args[]){
         MinHeap h = new MinHeap();
-        System.out.println(h.isEmpty());
+        
         h.insert(2);
         h.insert(3);
         h.insert(4);
         h.insert(5);
         h.insert(10);
         h.insert(1);
-        System.out.println(h.arr);
-        System.out.println(h.peak());
-        h.delete();
-       
-        System.out.println(h.arr);
-        System.out.print(h.isEmpty());
+        while(!h.isEmpty()){
+            System.out.print(h.peak()+ " ");
+            h.delete();
+        }
 
     }
 }
