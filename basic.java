@@ -1,73 +1,69 @@
 import java.util.*;
 public class basic{
-    public static class Node{
-        int data;
-        Node left;
-        Node right;
-        Node(int data){
-            this.data = data;
-        }
-    }
-
-    public static Node insert(Node root,Node newNode){
-        if(root == null){
-            return newNode;
-        }
-        if(newNode.data < root.data){
-            root.left = insert(root.left,newNode);
-        }
-        if(newNode.data >= root.data){
-            root.right = insert(root.right,newNode);
-        }
-        return root;
-    }
-    public static Node buildBST(int arr[]){
-        Node root= null;
+    public static void printBoard(char arr[][]){
         for(int i=0;i<arr.length;i++){
-            root = insert(root,new Node(arr[i]));
+            for(int j=0;j<arr.length;j++){
+                System.out.print(arr[i][j] + " ");
+            }
+            System.out.println();
         }
-        return root;
+            System.out.println();
     }
-    public static void inorder(Node root){
-        if(root == null){
-            return ;
-        }
+    public static boolean check(char arr[][],int i,int j){
 
-        inorder(root.left);
-        System.out.print(root.data+" ");
-        inorder(root.right);
-    }
-    public static void preorder(Node root){
-        if(root == null){
-            return ;
+        for(int t = i-1;t>=0;t--){
+            if(arr[t][j] == 'Q'){
+                return false;
+            }
         }
+        int p = j;
+        for(int t = i-1; t>=0;t--){
+            p--;
+            if(p == -1){
+                break;
+            }
+            if(arr[t][p]== 'Q'){
+                return false;
+            }
+        }
+        p = j;
+        for(int t = i-1; t>=0;t--){
+            p++;
+            if(p == arr.length){
+                break;
+            }
+            if(arr[t][p]== 'Q'){
+                return false;
+            }
+        }
+        return true;
 
-        System.out.print(root.data+" ");
-        preorder(root.left);
-        preorder(root.right);
     }
-    public static Node mirror(Node root){
-        if(root == null){
-            return null;
+    public static boolean NQueen(char arr[][],int t){
+        if(t == arr.length){
+            printBoard(arr);
+            return true;
         }
-        Node left = mirror(root.left);
-        Node right = mirror(root.right);
-        root.left = right;
-        root.right = left;
-        return root;
-    }   
+        for(int i=0;i<arr.length;i++){
+            if(check(arr,t,i)){
+                arr[t][i] = 'Q';
+                boolean ans = NQueen(arr,t+1);
+                arr[t][i] = '*';
+                if(ans == true){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public static void main(String args[]){
-        int arr[] = {8,5,10,3,6,11};
-        int arr2[] = {8,5,3,-1,-1,6,-1,-1,10,-1,11,-1,-1};
-        Node root = buildBST(arr);
-        inorder(root);
-        System.out.println();
-        preorder(root);
-        System.out.println();
-        System.out.println("After mirror: ");
-        root = mirror(root);
-        inorder(root);
-        System.out.println();
-        preorder(root);
-    }   
+        int n = 4;
+        char arr[][] = new char[n][n];
+        for(int i=0;i<n;i++){
+            for(int j =0;j<n;j++){
+                arr[i][j] = '*';
+            }
+        }
+        NQueen(arr,0);
+    }
 }
